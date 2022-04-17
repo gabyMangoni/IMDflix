@@ -1,43 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useFetch } from '../hook/useFetch';
 import { Container, Box, SimpleGrid, Input } from '@chakra-ui/react';
 
 import Card from './Card';
 import Loading from './Loading';
 
 const Cards = () => {
-  const [allImages, setImages] = useState([]);
-  const [expression, setExpression] = useState(['Marvel']);
-
-  const [loading, setLoading] = useState(false);
-
-  const inputTag = useRef();
-
-  useEffect(() => {
-    const endpoint = async () => {
-      try {
-        const apiKey = 'k_x6l6lsfo';
-        const url = `https://imdb-api.com/es/API/Search/${apiKey}/${expression}`;
-        setLoading(true);
-        const res = await fetch(url);
-        const data = await res.json();
-        console.log(data.results);
-        setLoading(false);
-        setImages(data.results);
-      } catch (error) {
-        setLoading(false);
-        console.log(error.message);
-      }
-    };
-
-    endpoint();
-  }, [expression]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const inputValue = inputTag.current.value;
-    setExpression(inputValue);
-    inputTag.current.value = '';
-  };
+  const [allImages, loading, expression, inputTag, handleSubmit] = useFetch();
 
   return (
     <>
